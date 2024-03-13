@@ -6,29 +6,28 @@
 #include <iostream>
 #include <cassert>
 
-int binarySearch(int arr[], int left, int right) {
+//бинарный поиск
+int binarySearch(long long int arr[], int left, int right) {
     while (left < right) {
         int middle = (right + left) / 2;
-        if (arr[middle - 1] > arr[middle] && arr[middle + 1] < arr[middle]) {
+        if (arr[middle + 1] < arr[middle]) {
             right = middle;
         }
-        else if (arr[middle - 1] < arr[middle] && arr[middle + 1] > arr[middle]) {
+        else {
             left = middle + 1;
         }
-        else if (arr[middle - 1] < arr[middle] && arr[middle + 1] < arr[middle]) {
-            return middle;
-        }
     }
-    return (left == right) ? -1 : left;
+    return right;
 }
 
-int expSearch(int arr[], int size) {
+//экспоненциальный поиск
+int expSearch(long long int arr[], int size) {
     assert(size > 0);
-    int boundLeft = 1, boundRight = 2;
-    while (arr[boundLeft] < arr[boundRight]) {
+    int boundLeft = 0, boundRight = 1;
+    while (arr[boundRight] < arr[boundRight + 1] && boundRight + 1 < size) {
         boundLeft = boundRight;
         if (boundRight * 2 > size) {
-            boundRight = size;
+            boundRight = size - 1;
         }
         else {
             boundRight *= 2;
@@ -41,11 +40,11 @@ int main()
 {
     int n = 0;
     std::cin >> n;
-    int* A = new int[n];
+    long long int* A = new long long int[n];
     for (int i = 0; i < n; ++i) {
         std::cin >> A[i];
     }
-    std::cout << expSearch(A, n) << std::endl;
+    std::cout << expSearch(A, n);
     delete[] A;
     return 0;
 }
